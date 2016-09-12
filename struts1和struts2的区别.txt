@@ -1,1 +1,35 @@
-struts1和struts2的区别.txt
+Struts2是基于WebWork的一个全新框架.
+我以前就是学Struts1.4学了一个多月,好不容易有进展了,却被告知现在流行用Struts2.
+不过有了Struts1的基础,学Struts2更方便.
+
+Struts2主要改进是取代了Struts1的Servlet和Action.
+Struts2的核心框架是当作一个filter来实现其功能的,而Struts1是ActionServlet搜索.
+然后在Action上,Struts1都少不了要传递Request等参数,还要继承Action父类,而Struts2只要实现了一个public String execute()就可以了,这样Action就可以实现脱离Servlet 测试.
+Struts2还提供了拦截器(Interceptot)等Struts1所没有的技术.
+这一点到网上搜搜有很多文献.
+
+一个简单的配置文件:struts.xml(取代了struts1里面的strut-config.xml)
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+ <constant name="struts.devMode" value="false" />
+ <package name="default"  extends="struts-default" namespace="/">
+  <interceptors>
+   <interceptor name="interceptor_login_check" class="interceptor.LoginCheck" />
+  </interceptors>
+  
+   <default-interceptor-ref name="completeStatck"></default-interceptor-ref>
+  
+  <action name="login" class="action.LoginAction">
+    <result name="success" >login_success.jsp</result>
+    <result name="input">login.jsp</result>
+    <interceptor-ref name="completeStack"></interceptor-ref>
+    <interceptor-ref name="interceptor_login_check"></interceptor-ref>   
+</action>
+
+ </package>
+
+</struts>
